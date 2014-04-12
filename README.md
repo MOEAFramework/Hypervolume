@@ -11,3 +11,5 @@ Run `make` to compile.  Copy `wfg2` to the MOEA Framework root directory.  Modif
 org.moeaframework.core.indicator.hypervolume = ./wfg2 {2}
 org.moeaframework.core.indicator.hypervolume_inverted = true
 ```
+
+If using Windows, add the `.exe` extension if necessary.
