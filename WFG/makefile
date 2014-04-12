@@ -1,12 +1,7 @@
 EXE = wfg
 OBJ = read.o avl.o 
 
-OPT = -O3 
-
-
-
-#OPT = -g
-#CC = gcc -std=c99 -Wall -pedantic -Werror -lm -O5
+OPT = -O3 -DSIMPLE
 CC = gcc -std=c99 -Wall  $(OPT)
 
 $(EXE): $(OBJ) wfg.c

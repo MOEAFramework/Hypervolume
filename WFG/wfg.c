@@ -33,8 +33,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
+#ifndef SIMPLE
 #include <sys/time.h>
 #include <sys/resource.h>
+#endif
 #include "wfg.h"
 #include "avl.h"
 
@@ -386,10 +388,12 @@ int main(int argc, char *argv[])
 
   for (int i = 0; i < f->nFronts; i++) 
     {      
+#ifndef SIMPLE
       struct timeval tv1, tv2;
       struct rusage ru_before, ru_after;
       getrusage (RUSAGE_SELF, &ru_before);
- 
+#endif
+
       n = f->fronts[i].n;
       #if opt >= 3
       if (n == 2)
@@ -400,10 +404,13 @@ int main(int argc, char *argv[])
       #endif
       printf("hv(%d) = %1.10f\n", i+1, hv(f->fronts[i])); 
 
+#ifndef SIMPLE
       getrusage (RUSAGE_SELF, &ru_after);
       tv1 = ru_before.ru_utime;
       tv2 = ru_after.ru_utime;
+
       printf("Time: %f (s)\n", tv2.tv_sec + tv2.tv_usec * 1e-6 - tv1.tv_sec - tv1.tv_usec * 1e-6);
+#endif
     }
 
   return 0;

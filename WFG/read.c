@@ -50,10 +50,20 @@ FILECONTENTS *readFile(char filename[])
 		fprintf(stderr, "File %s could not be opened\n", filename);
 		exit(EXIT_FAILURE);
 	}
+	
+#ifdef SIMPLE
+	front = fc->nFronts;
+	fc->nFronts++;
+	fc->fronts = realloc(fc->fronts, sizeof(FRONT) * fc->nFronts);
+	fc->fronts[front].nPoints = 0;
+	fc->fronts[front].points = NULL;
+#endif
 
 	while(fgets(line, sizeof line, fp) != NULL)
 	{
 		trimLine(line);
+		
+#ifndef SIMPLE
 		if (strcmp(line, "#") == 0)
 		{
 			front = fc->nFronts;
@@ -64,6 +74,7 @@ FILECONTENTS *readFile(char filename[])
 		}
 		else
 		{
+#endif
 			FRONT *f = &fc->fronts[front];
 			point = f->nPoints;
 			f->nPoints++;
@@ -80,8 +91,18 @@ FILECONTENTS *readFile(char filename[])
 				p->objectives = realloc(p->objectives, sizeof(OBJECTIVE) * f->n);
 				p->objectives[objective] = atof(tok);
 			} while ((tok = strtok(NULL, " \t\n")) != NULL);
+#ifndef SIMPLE
 		}
+#endif
 	}
+	
+#ifdef SIMPLE
+	front = fc->nFronts;
+	fc->nFronts++;
+	fc->fronts = realloc(fc->fronts, sizeof(FRONT) * fc->nFronts);
+	fc->fronts[front].nPoints = 0;
+	fc->fronts[front].points = NULL;
+#endif
 
 	fc->nFronts--;
 	// for (int i = 0; i < fc->nFronts; i++) fc->fronts[i].n = fc->fronts[i].points[0].nObjectives;
