@@ -1,5 +1,5 @@
 compile:
-	g++ -o hoy hoy.cpp
+	g++ -O3 -o hoy hoy.cpp
 	
 clean:
 	rm -f hoy hoy.exe
