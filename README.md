@@ -18,7 +18,7 @@ Run `make` to compile.  Copy `hoy` to the MOEA Framework root directory.  Modify
 
 ```
 org.moeaframework.core.indicator.hypervolume = ./hoy {0} {1} {2} {3} 
-org.moeaframework.core.indicator.hypervolume_inverted = true
+org.moeaframework.core.indicator.hypervolume_inverted = false
 ```
 
 Building on Windows
