@@ -12,5 +12,4 @@ compile: $(OBJ) wfg.c
 	$(CC) -c $<
 
 clean: 
-	rm -f wfg[0-4] exc[0-4] *.o 
-	rm -rf *.dSYM
+	rm -f wfg[0-4] wfg[0-4].exe *.o
