@@ -17,13 +17,18 @@ jobs:
       run: |
         cd WFG
         make
-    - name: Download and compile HV
+    - name: Download and compile HV rc1
+      run: |
+        wget https://lopez-ibanez.eu/files/hv-2.0rc1-src.tar.gz
+        tar -xzf hv-2.0rc1-src.tar.gz
+        cd hv-2.0rc1-src
+        make
+    - name: Download and compile HV rc2
       run: |
         wget https://lopez-ibanez.eu/files/hv-2.0rc2-src.tar.gz
         tar -xzf hv-2.0rc2-src.tar.gz
         cd hv-2.0rc2-src
         make
-        ls .
     - name: Setup timings
       run: |
         VERSION=$(curl https://api.github.com/repos/MOEAFramework/MOEAFramework/releases/latest | jq '.tag_name' | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')
@@ -33,11 +38,13 @@ jobs:
         
         mv WFG/wfg2 MOEAFramework-Latest
         mv HOY/hoy MOEAFramework-Latest
-        mv hv-2.0rc2-src/hv MOEAFramework-Latest
+        mv hv-2.0rc1-src/hv MOEAFramework-Latest/hv2.rc1
+        mv hv-2.0rc2-src/hv MOEAFramework-Latest/hv2.rc2
     - name: Run timings
       run: |
         cd MOEAFramework-Latest
-
+        
+        trials=1
         inputs=(DTLZ2.2D.pf DTLZ2.3D.pf DTLZ2.4D.pf DTLZ2.6D.pf DTLZ2.8D.pf)
 
         function test() {
@@ -52,7 +59,7 @@ jobs:
             eps=0.2
           fi
 
-          for i in {1..5}
+          for i in $(seq 1 $trials)
           do
             hv=$(java -cp ".:lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume -e "$eps" "./pf/$1")
           done
@@ -68,8 +75,8 @@ jobs:
           done
         }
 
-        echo "Built-in..."
-        printf "" > moeaframework.properties
+        #echo "Built-in..."
+        #printf "" > moeaframework.properties
         #test_all
 
         echo ""
@@ -81,8 +88,13 @@ jobs:
         #echo "HOY..."
         #printf "org.moeaframework.core.indicator.hypervolume = ./hoy {0} {1} {2} {3}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
         #test_all
+        
+        echo ""
+        echo "HV2 rc1..."
+        printf "org.moeaframework.core.indicator.hypervolume = ./hv2.rc1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        test_all
 
         echo ""
-        echo "HV..."
-        printf "org.moeaframework.core.indicator.hypervolume = ./hv {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        echo "HV2 rc2..."
+        printf "org.moeaframework.core.indicator.hypervolume = ./hv2.rc1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
         test_all
