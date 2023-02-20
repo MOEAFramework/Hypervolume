@@ -47,9 +47,9 @@ jobs:
           if echo "$input" | grep ".4D." > /dev/null; then
             eps=0.05
           elif echo "$input" | grep ".6D." > /dev/null; then
-            eps=0.15
+            eps=0.1
           elif echo "$input" | grep ".8D." > /dev/null; then
-            eps=0.3
+            eps=0.15
           fi
 
           for i in {1..5}
