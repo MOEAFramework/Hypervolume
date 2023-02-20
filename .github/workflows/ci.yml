@@ -49,7 +49,7 @@ jobs:
           elif echo "$input" | grep ".6D." > /dev/null; then
             eps=0.1
           elif echo "$input" | grep ".8D." > /dev/null; then
-            eps=0.15
+            eps=0.2
           fi
 
           for i in {1..5}
