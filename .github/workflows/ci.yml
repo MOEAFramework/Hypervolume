@@ -21,6 +21,7 @@ jobs:
       run: |
         wget https://lopez-ibanez.eu/files/hv-2.0rc2-src.tar.gz
         tar -xzf hv-2.0rc2-src.tar.gz
+        cd hv-2.0rc2
         make
         ls .
     - name: Setup timings
@@ -37,7 +38,7 @@ jobs:
       run: |
         cd MOEAFramework-Latest
 
-        inputs=(DTLZ2.2D.pf DTLZ2.4D.pf DTLZ2.6D.pf)
+        inputs=(DTLZ2.2D.pf DTLZ2.4D.pf)
 
         function test() {
           ts=$(date +%s%N)
