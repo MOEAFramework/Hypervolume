@@ -79,9 +79,12 @@ jobs:
         test_all
 
         echo ""
-        echo "HV..."
+        echo "HV (note: these results can differ since the sets are not normalized)..."
 
         for input in ${inputs[@]}
         do
-          ./hv "./pf/$input"
+          ts=$(date +%s%N)
+          hv=$(./hv "./pf/$input")
+          et=$((($(date +%s%N) - $ts)/1000000))
+          echo "    ./pf/$input $hv ($et ms)"
         done
