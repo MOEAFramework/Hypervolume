@@ -21,7 +21,7 @@ jobs:
       run: |
         wget https://lopez-ibanez.eu/files/hv-2.0rc2-src.tar.gz
         tar -xzf hv-2.0rc2-src.tar.gz
-        cd hv-2.0rc2
+        cd hv-2.0rc2-src
         make
         ls .
     - name: Setup timings
@@ -33,7 +33,7 @@ jobs:
         
         mv WFG/wfg2 MOEAFramework-Latest
         mv HOY/hoy MOEAFramework-Latest
-        mv hv-2.0rc2/hv MOEAFramework-Latest
+        mv hv-2.0rc2-src/hv MOEAFramework-Latest
     - name: Run timings
       run: |
         cd MOEAFramework-Latest
