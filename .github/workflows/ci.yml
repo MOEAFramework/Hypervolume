@@ -69,12 +69,6 @@ jobs:
         test_all
 
         echo ""
-        echo "HV (note: these results can differ since the sets are not normalized)..."
-
-        for input in ${inputs[@]}
-        do
-          ts=$(date +%s%N)
-          hv=$(./hv "./pf/$input")
-          et=$((($(date +%s%N) - $ts)/1000000))
-          echo "    ./pf/$input $hv ($et ms)"
-        done
+        echo "HV..."
+        printf "org.moeaframework.core.indicator.hypervolume = ./hv {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        test_all
