@@ -83,5 +83,5 @@ jobs:
 
         for input in ${inputs[@]}
         do
-          hv "./pf/$input"
+          ./hv "./pf/$input"
         done
