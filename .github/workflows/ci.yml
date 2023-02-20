@@ -22,5 +22,18 @@ jobs:
         VERSION=$(curl https://api.github.com/repos/MOEAFramework/MOEAFramework/releases/latest | jq '.tag_name' | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')
         wget https://github.com/MOEAFramework/MOEAFramework/releases/download/v${VERSION}/MOEAFramework-${VERSION}.tar.gz
         tar -xzf MOEAFramework-${VERSION}.tar.gz
-        ls .
+        
+        mv WFG/wfg2 MOEAFramework-${VERSION}
+        mv HOY/hoy MOEAFramework-${VERSION}
+        pushd MOEAFramework-${VERSION}
 
+        inputs=(DTLZ2.2D.pf DTLZ2.4D.pf DTLZ2.6D.pf DTLZ2.8D.pf)
+        function timer() { ts=$(date +%s%N); $@; echo $((($(date +%s%N) - $ts)/1000000)); }
+
+        echo "WFG (Variant 2)..."
+        printf "org.moeaframework.core.indicator.hypervolume = ./wfg2 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
+        
+        for input in $inputs
+        do
+          echo "    > $input: $(timer java -cp "lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume ./pf/$input)"
+        done
