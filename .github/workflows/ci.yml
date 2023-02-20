@@ -38,7 +38,7 @@ jobs:
       run: |
         cd MOEAFramework-Latest
 
-        inputs=(DTLZ2.2D.pf DTLZ2.4D.pf)
+        inputs=(DTLZ2.2D.pf)
 
         function test() {
           ts=$(date +%s%N)
@@ -77,3 +77,11 @@ jobs:
         echo "HOY..."
         printf "org.moeaframework.core.indicator.hypervolume = ./hoy {0} {1} {2} {3}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
         test_all
+
+        echo ""
+        echo "HV..."
+
+        for input in ${inputs[@]}
+        do
+          hv "./pf/$input"
+        done
