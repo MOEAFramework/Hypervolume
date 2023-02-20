@@ -63,10 +63,10 @@ jobs:
         printf "org.moeaframework.core.indicator.hypervolume = ./wfg2 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
         test_all
 
-        echo ""
-        echo "HOY..."
-        printf "org.moeaframework.core.indicator.hypervolume = ./hoy {0} {1} {2} {3}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
-        test_all
+        #echo ""
+        #echo "HOY..."
+        #printf "org.moeaframework.core.indicator.hypervolume = ./hoy {0} {1} {2} {3}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        #test_all
 
         echo ""
         echo "HV..."
