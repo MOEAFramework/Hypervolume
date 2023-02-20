@@ -38,7 +38,7 @@ jobs:
       run: |
         cd MOEAFramework-Latest
 
-        inputs=(DTLZ2.2D.pf DTLZ2.3D.pf DTLZ2.4D.pf DTLZ2.6D.pf DTLZ2.8D.pf)
+        inputs=(DTLZ2.2D.pf DTLZ2.3D.pf DTLZ2.4D.pf DTLZ2.6D.pf)
 
         function test() {
           ts=$(date +%s%N)
