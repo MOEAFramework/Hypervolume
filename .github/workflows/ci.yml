@@ -52,7 +52,7 @@ jobs:
             eps=0.25
           fi
 
-          for i in ${1 .. 5}
+          for i in {1..5}
           do
             hv=$(java -cp ".:lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume -e "$eps" "./pf/$1")
           done
