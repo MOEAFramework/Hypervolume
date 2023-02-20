@@ -17,6 +17,12 @@ jobs:
       run: |
         cd WFG
         make
+    - name: Download and compile HV 1.3
+      run: |
+        wget https://lopez-ibanez.eu/files/hv-1.3-src.tar.gz
+        tar -xzf hv-1.3-src.tar.gz
+        cd hv-1.3-src
+        make
     - name: Download and compile HV rc1
       run: |
         wget https://lopez-ibanez.eu/files/hv-2.0rc1-src.tar.gz
@@ -38,6 +44,7 @@ jobs:
         
         mv WFG/wfg2 MOEAFramework-Latest
         mv HOY/hoy MOEAFramework-Latest
+        mv hv-1.3-src/hv MOEAFramework-Latest/hv1.3
         mv hv-2.0rc1-src/hv MOEAFramework-Latest/hv2.rc1
         mv hv-2.0rc2-src/hv MOEAFramework-Latest/hv2.rc2
     - name: Run timings
@@ -88,6 +95,11 @@ jobs:
         #echo "HOY..."
         #printf "org.moeaframework.core.indicator.hypervolume = ./hoy {0} {1} {2} {3}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
         #test_all
+        
+        echo ""
+        echo "HV1.3..."
+        printf "org.moeaframework.core.indicator.hypervolume = ./hv1.3 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        test_all
         
         echo ""
         echo "HV2 rc1..."
