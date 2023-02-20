@@ -44,12 +44,12 @@ jobs:
           ts=$(date +%s%N)
           eps=0.01
 
-          if echo "$input" | grep ".4D."; then
+          if echo "$input" | grep ".4D." > /dev/null; then
+            eps=0.05
+          elif echo "$input" | grep ".6D." > /dev/null; then
             eps=0.15
-          elif echo "$input" | grep ".6D."; then
+          elif echo "$input" | grep ".8D." > /dev/null; then
             eps=0.25
-          elif echo "$input" | grep ".8D."; then
-            eps=0.35
           fi
 
           hv=$(java -cp ".:lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume -e "$eps" "./pf/$1")
