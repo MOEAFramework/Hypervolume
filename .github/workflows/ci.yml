@@ -42,17 +42,7 @@ jobs:
 
         function test() {
           ts=$(date +%s%N)
-          eps=0.01
-
-          if echo "$input" | grep ".4D."; then
-            eps=0.15
-          elif echo "$input" | grep ".6D."; then
-            eps=0.25
-          elif echo "$input" | grep ".8D."; then
-            eps=0.35
-          fi
-
-          hv=$(java -cp ".:lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume -e "$eps" "./pf/$1")
+          hv=$(java -cp ".:lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume "./pf/$1")
           et=$((($(date +%s%N) - $ts)/1000000))
           echo "    $hv ($et ms)"
         }
