@@ -59,19 +59,19 @@ jobs:
 
         function test() {
           ts=$(date +%s%N)
-          eps=0.01
+          #eps=0.01
 
-          if echo "$input" | grep ".4D." > /dev/null; then
-            eps=0.05
-          elif echo "$input" | grep ".6D." > /dev/null; then
-            eps=0.1
-          elif echo "$input" | grep ".8D." > /dev/null; then
-            eps=0.2
-          fi
+          #if echo "$input" | grep ".4D." > /dev/null; then
+          #  eps=0.05
+          #elif echo "$input" | grep ".6D." > /dev/null; then
+          #  eps=0.1
+          #elif echo "$input" | grep ".8D." > /dev/null; then
+          #  eps=0.2
+          #fi
 
           for i in $(seq 1 $trials)
           do
-            hv=$(java -cp ".:lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume -e "$eps" "./pf/$1")
+            hv=$(java -cp ".:lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume "./pf/$1")
           done
 
           et=$((($(date +%s%N) - $ts)/1000000))
@@ -89,25 +89,25 @@ jobs:
         #printf "" > moeaframework.properties
         #test_all
         
-        echo ""
-        echo "WFG (Variant 0)..."
-        printf "org.moeaframework.core.indicator.hypervolume = ./wfg0 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
-        test_all
+        #echo ""
+        #echo "WFG (Variant 0)..."
+        #printf "org.moeaframework.core.indicator.hypervolume = ./wfg0 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
+        #test_all
         
-        echo ""
-        echo "WFG (Variant 1)..."
-        printf "org.moeaframework.core.indicator.hypervolume = ./wfg1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
-        test_all
+        #echo ""
+        #echo "WFG (Variant 1)..."
+        #printf "org.moeaframework.core.indicator.hypervolume = ./wfg1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
+        #test_all
 
         echo ""
         echo "WFG (Variant 2)..."
         printf "org.moeaframework.core.indicator.hypervolume = ./wfg2 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
         test_all
         
-        echo ""
-        echo "WFG (Variant 3)..."
-        printf "org.moeaframework.core.indicator.hypervolume = ./wfg3 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
-        test_all
+        #echo ""
+        #echo "WFG (Variant 3)..."
+        #printf "org.moeaframework.core.indicator.hypervolume = ./wfg3 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
+        #test_all
 
         # Need to investigate, this is taking really long and something might have broke...
         #echo ""
@@ -115,17 +115,17 @@ jobs:
         #printf "org.moeaframework.core.indicator.hypervolume = ./hoy {0} {1} {2} {3}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
         #test_all
         
-        echo ""
-        echo "HV1.3..."
-        printf "org.moeaframework.core.indicator.hypervolume = ./hv1.3 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
-        test_all
+        #echo ""
+        #echo "HV1.3..."
+        #printf "org.moeaframework.core.indicator.hypervolume = ./hv1.3 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        #test_all
         
-        echo ""
-        echo "HV2 rc1..."
-        printf "org.moeaframework.core.indicator.hypervolume = ./hv2.rc1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
-        test_all
+        #echo ""
+        #echo "HV2 rc1..."
+        #printf "org.moeaframework.core.indicator.hypervolume = ./hv2.rc1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        #test_all
 
-        echo ""
-        echo "HV2 rc2..."
-        printf "org.moeaframework.core.indicator.hypervolume = ./hv2.rc1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
-        test_all
+        #echo ""
+        #echo "HV2 rc2..."
+        #printf "org.moeaframework.core.indicator.hypervolume = ./hv2.rc1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        #test_all
