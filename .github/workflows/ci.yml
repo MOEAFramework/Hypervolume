@@ -11,13 +11,93 @@ jobs:
     - uses: actions/checkout@v3
     - name: Compile HOY
       run: |
-        pushd HOY
+        cd HOY
         make
     - name: Compile WFG
       run: |
-        pushd WFG
+        cd WFG
         make
     - name: Compile HV
       run: |
         pushd HV
         make
+    - name: Download and setup MOEA Framework
+      run: |
+        # ** Use the following to setup the latest release version **
+        #VERSION=$(curl https://api.github.com/repos/MOEAFramework/MOEAFramework/releases/latest | jq '.tag_name' | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')
+        #wget https://github.com/MOEAFramework/MOEAFramework/releases/download/v${VERSION}/MOEAFramework-${VERSION}.tar.gz
+        #tar -xzf MOEAFramework-${VERSION}.tar.gz
+        #mv MOEAFramework-${VERSION} MOEAFramework-Latest
+        
+        # ** Use the following to setup the latest master version **
+        git clone http://github.com/MOEAFramework/MOEAFramework
+        cd MOEAFramework
+        VERSION=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
+        ant package-binary
+        cd dist
+        tar -xzf MOEAFramework-${VERSION}.tar.gz
+        mv MOEAFramework-${VERSION} ../../MOEAFramework-Latest
+    - name: Setup executables
+      run: |
+        mv WFG/wfg2 MOEAFramework-Latest
+        mv HOY/hoy MOEAFramework-Latest
+        mv HV/hv MOEAFramework-Latest
+    - name: Run timings
+      run: |
+        cd MOEAFramework-Latest
+        
+        trials=1
+        inputs=(DTLZ2.2D.pf DTLZ2.3D.pf DTLZ2.4D.pf DTLZ2.6D.pf DTLZ2.8D.pf)
+
+        function test() {
+          ts=$(date +%s%N)
+          eps=0.01
+
+          if echo "$input" | grep ".4D." > /dev/null; then
+            eps=0.05
+          elif echo "$input" | grep ".6D." > /dev/null; then
+            eps=0.1
+          elif echo "$input" | grep ".8D." > /dev/null; then
+            eps=0.25
+          fi
+
+          for i in $(seq 1 $trials)
+          do
+            hv=$(java -cp ".:lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume -e "$eps" "./pf/$1")
+          done
+
+          et=$((($(date +%s%N) - $ts)/1000000))
+          echo "    $hv ($et ms)"
+        }
+
+        function test_all() {
+          for input in ${inputs[@]}
+          do
+            test "$input"
+          done
+        }
+
+        echo "Built-in (WFG)..."
+        printf "" > moeaframework.properties
+        test_all
+        
+        #echo ""
+        #echo "Built-in (PISA)..."
+        #printf "org.moeaframework.core.indicator.hypervolume = PISAHypervolume" > moeaframework.properties
+        #test_all
+       
+        echo ""
+        echo "WFG (Variant 2)..."
+        printf "org.moeaframework.core.indicator.hypervolume = ./wfg2 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
+        test_all
+
+        # Need to investigate, this is taking really long and something might have broke...
+        #echo ""
+        #echo "HOY..."
+        #printf "org.moeaframework.core.indicator.hypervolume = ./hoy {0} {1} {2} {3}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        #test_all
+        
+        echo ""
+        echo "HV..."
+        printf "org.moeaframework.core.indicator.hypervolume = ./hv {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
+        test_all
