@@ -17,4 +17,7 @@ jobs:
       run: |
         pushd WFG
         make
-
+    - name: Compile HV
+      run: |
+        pushd HV
+        make
