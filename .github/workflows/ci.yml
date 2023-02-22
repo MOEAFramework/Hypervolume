@@ -17,49 +17,31 @@ jobs:
       run: |
         cd WFG
         make
-    - name: Download and compile HV 1.3
+    - name: Compile HV
       run: |
-        wget https://lopez-ibanez.eu/files/hv-1.3-src.tar.gz
-        tar -xzf hv-1.3-src.tar.gz
-        cd hv-1.3-src
-        make
-    - name: Download and compile HV rc1
-      run: |
-        wget https://lopez-ibanez.eu/files/hv-2.0rc1-src.tar.gz
-        tar -xzf hv-2.0rc1-src.tar.gz
-        cd hv-2.0rc1-src
-        make
-    - name: Download and compile HV rc2
-      run: |
-        wget https://lopez-ibanez.eu/files/hv-2.0rc2-src.tar.gz
-        tar -xzf hv-2.0rc2-src.tar.gz
-        cd hv-2.0rc2-src
+        pushd HV
         make
     - name: Download and setup MOEA Framework
       run: |
+        # ** Use the following to setup the latest release version **
         #VERSION=$(curl https://api.github.com/repos/MOEAFramework/MOEAFramework/releases/latest | jq '.tag_name' | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')
         #wget https://github.com/MOEAFramework/MOEAFramework/releases/download/v${VERSION}/MOEAFramework-${VERSION}.tar.gz
         #tar -xzf MOEAFramework-${VERSION}.tar.gz
         #mv MOEAFramework-${VERSION} MOEAFramework-Latest
         
+        # ** Use the following to setup the latest master version **
+        VERSION=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
         git clone http://github.com/MOEAFramework/MOEAFramework
         cd MOEAFramework
         ant package-binary
-        mv dist/MOEAFramework-*.tar.gz ../
-        cd ..
-        tar -xzf MOEAFramework-*.tar.gz
-        rm MOEAFramework-*.tar.gz
-        mv MOEAFramework-* MOEAFramework-Latest
-    - name: Setup timings
+        cd dist
+        tar -xzf MOEAFramework-${VERSION}.tar.gz
+        mv MOEAFramework-${VERSION}.tar.gz ../../MOEAFramework-Latest
+    - name: Setup executables
       run: |
-        mv WFG/wfg0 MOEAFramework-Latest
-        mv WFG/wfg1 MOEAFramework-Latest
         mv WFG/wfg2 MOEAFramework-Latest
-        mv WFG/wfg3 MOEAFramework-Latest
         mv HOY/hoy MOEAFramework-Latest
-        mv hv-1.3-src/hv MOEAFramework-Latest/hv1.3
-        mv hv-2.0rc1-src/hv MOEAFramework-Latest/hv2.rc1
-        mv hv-2.0rc2-src/hv MOEAFramework-Latest/hv2.rc2
+        mv HV/hv MOEAFramework-Latest
     - name: Run timings
       run: |
         cd MOEAFramework-Latest
@@ -76,7 +58,7 @@ jobs:
           elif echo "$input" | grep ".6D." > /dev/null; then
             eps=0.1
           elif echo "$input" | grep ".8D." > /dev/null; then
-            eps=0.2
+            eps=0.25
           fi
 
           for i in $(seq 1 $trials)
@@ -102,26 +84,11 @@ jobs:
         echo "Built-in (PISA)..."
         printf "org.moeaframework.core.indicator.hypervolume = PISAHypervolume" > moeaframework.properties
         test_all
-        
-        #echo ""
-        #echo "WFG (Variant 0)..."
-        #printf "org.moeaframework.core.indicator.hypervolume = ./wfg0 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
-        #test_all
-        
-        #echo ""
-        #echo "WFG (Variant 1)..."
-        #printf "org.moeaframework.core.indicator.hypervolume = ./wfg1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
-        #test_all
-
+       
         echo ""
         echo "WFG (Variant 2)..."
         printf "org.moeaframework.core.indicator.hypervolume = ./wfg2 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
         test_all
-        
-        #echo ""
-        #echo "WFG (Variant 3)..."
-        #printf "org.moeaframework.core.indicator.hypervolume = ./wfg3 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
-        #test_all
 
         # Need to investigate, this is taking really long and something might have broke...
         #echo ""
@@ -129,17 +96,7 @@ jobs:
         #printf "org.moeaframework.core.indicator.hypervolume = ./hoy {0} {1} {2} {3}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
         #test_all
         
-        #echo ""
-        #echo "HV1.3..."
-        #printf "org.moeaframework.core.indicator.hypervolume = ./hv1.3 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
-        #test_all
-        
-        #echo ""
-        #echo "HV2 rc1..."
-        #printf "org.moeaframework.core.indicator.hypervolume = ./hv2.rc1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
-        #test_all
-
-        #echo ""
-        #echo "HV2 rc2..."
-        #printf "org.moeaframework.core.indicator.hypervolume = ./hv2.rc1 {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
-        #test_all
+        echo ""
+        echo "HV..."
+        printf "org.moeaframework.core.indicator.hypervolume = ./hv {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        test_all
