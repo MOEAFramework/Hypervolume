@@ -48,7 +48,7 @@ jobs:
         mv dist/MOEAFramework-*.tar.gz ../
         cd ..
         tar -xzf MOEAFramework-*.tar.gz
-        mv MOEAFramework-* MOEAFramework-Latest
+        #mv MOEAFramework-* MOEAFramework-Latest
         ls
     - name: Setup timings
       run: |
