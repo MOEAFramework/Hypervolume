@@ -35,6 +35,21 @@ jobs:
         tar -xzf hv-2.0rc2-src.tar.gz
         cd hv-2.0rc2-src
         make
+    - name: Download and setup MOEA Framework
+      run: |
+        #VERSION=$(curl https://api.github.com/repos/MOEAFramework/MOEAFramework/releases/latest | jq '.tag_name' | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')
+        #wget https://github.com/MOEAFramework/MOEAFramework/releases/download/v${VERSION}/MOEAFramework-${VERSION}.tar.gz
+        #tar -xzf MOEAFramework-${VERSION}.tar.gz
+        #mv MOEAFramework-${VERSION} MOEAFramework-Latest
+        
+        git clone http://github.com/MOEAFramework/MOEAFramework
+        cd MOEAFramework
+        ant package-binary
+        mv dist/MOEAFramework-*.tar.gz ../
+        cd ..
+        tar -xzf MOEAFramework-*.tar.gz
+        mv MOEAFramework-* MOEAFramework-Latest
+        ls
     - name: Setup timings
       run: |
         VERSION=$(curl https://api.github.com/repos/MOEAFramework/MOEAFramework/releases/latest | jq '.tag_name' | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')
