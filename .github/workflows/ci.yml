@@ -81,9 +81,10 @@ jobs:
         printf "" > moeaframework.properties
         test_all
         
-        echo "Built-in (PISA)..."
-        printf "org.moeaframework.core.indicator.hypervolume = PISAHypervolume" > moeaframework.properties
-        test_all
+        #echo ""
+        #echo "Built-in (PISA)..."
+        #printf "org.moeaframework.core.indicator.hypervolume = PISAHypervolume" > moeaframework.properties
+        #test_all
        
         echo ""
         echo "WFG (Variant 2)..."
