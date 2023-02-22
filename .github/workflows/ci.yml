@@ -30,9 +30,9 @@ jobs:
         #mv MOEAFramework-${VERSION} MOEAFramework-Latest
         
         # ** Use the following to setup the latest master version **
-        VERSION=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
         git clone http://github.com/MOEAFramework/MOEAFramework
         cd MOEAFramework
+        VERSION=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
         ant package-binary
         cd dist
         tar -xzf MOEAFramework-${VERSION}.tar.gz
