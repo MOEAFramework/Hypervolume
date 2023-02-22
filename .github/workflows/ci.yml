@@ -98,5 +98,5 @@ jobs:
         
         echo ""
         echo "HV..."
-        printf "org.moeaframework.core.indicator.hypervolume = ./hv {2}\norg.moeaframework.core.indicator.hypervolume_inverted = false" > moeaframework.properties
+        printf "org.moeaframework.core.indicator.hypervolume = ./hv {2}\norg.moeaframework.core.indicator.hypervolume_inverted = true" > moeaframework.properties
         test_all
