@@ -48,15 +48,10 @@ jobs:
         mv dist/MOEAFramework-*.tar.gz ../
         cd ..
         tar -xzf MOEAFramework-*.tar.gz
-        #mv MOEAFramework-* MOEAFramework-Latest
-        ls
+        rm MOEAFramework-*.tar.gz
+        mv MOEAFramework-* MOEAFramework-Latest
     - name: Setup timings
       run: |
-        VERSION=$(curl https://api.github.com/repos/MOEAFramework/MOEAFramework/releases/latest | jq '.tag_name' | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')
-        wget https://github.com/MOEAFramework/MOEAFramework/releases/download/v${VERSION}/MOEAFramework-${VERSION}.tar.gz
-        tar -xzf MOEAFramework-${VERSION}.tar.gz
-        mv MOEAFramework-${VERSION} MOEAFramework-Latest
-        
         mv WFG/wfg0 MOEAFramework-Latest
         mv WFG/wfg1 MOEAFramework-Latest
         mv WFG/wfg2 MOEAFramework-Latest
@@ -100,9 +95,13 @@ jobs:
           done
         }
 
-        #echo "Built-in..."
-        #printf "" > moeaframework.properties
-        #test_all
+        echo "Built-in (WFG)..."
+        printf "" > moeaframework.properties
+        test_all
+        
+        echo "Built-in (PISA)..."
+        printf "org.moeaframework.core.indicator.hypervolume = PISAHypervolume" > moeaframework.properties
+        test_all
         
         #echo ""
         #echo "WFG (Variant 0)..."
