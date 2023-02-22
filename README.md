@@ -26,10 +26,10 @@ Improved dimension-sweep hypervolume calculation as described in:
 
 > Carlos M. Fonseca, Luís Paquete, and Manuel López-Ibáñez. An improved dimension-sweep algorithm for the hypervolume indicator. In IEEE Congress on Evolutionary Computation, pages 1157-1163, Vancouver, Canada, July 2006.
 
-Run `make` from the `HV/` subdirectory to compile.  Copy `fpli_hv` to the MOEA Framework root directory.  Modify `moeaframework.properties` to include the following lines:
+Run `make` from the `HV/` subdirectory to compile.  Copy `hv` to the MOEA Framework root directory.  Modify `moeaframework.properties` to include the following lines:
 
 ```
-org.moeaframework.core.indicator.hypervolume = ./fpli_hv {2}
+org.moeaframework.core.indicator.hypervolume = ./hv {2}
 org.moeaframework.core.indicator.hypervolume_inverted = true
 ```
 
