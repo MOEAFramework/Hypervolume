@@ -68,7 +68,7 @@ jobs:
 
           for i in $(seq 1 $trials)
           do
-            hv=$(java -cp ".:lib/*" org.moeaframework.analysis.sensitivity.SetHypervolume -e "$eps" "./pf/$1")
+            hv=$(java -cp ".:lib/*" org.moeaframework.analysis.tools.SetHypervolume -e "$eps" "./pf/$1")
           done
 
           et=$((($(date +%s%N) - $ts)/1000000))
