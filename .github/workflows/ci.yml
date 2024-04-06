@@ -29,19 +29,19 @@ jobs:
     - name: Download and setup MOEA Framework
       run: |
         # ** Use the following to setup the latest release version **
-        #VERSION=$(curl https://api.github.com/repos/MOEAFramework/MOEAFramework/releases/latest | jq '.tag_name' | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')
-        #wget https://github.com/MOEAFramework/MOEAFramework/releases/download/v${VERSION}/MOEAFramework-${VERSION}.tar.gz
-        #tar -xzf MOEAFramework-${VERSION}.tar.gz
-        #mv MOEAFramework-${VERSION} MOEAFramework-Latest
+        VERSION=$(curl https://api.github.com/repos/MOEAFramework/MOEAFramework/releases/latest | jq '.tag_name' | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')
+        wget https://github.com/MOEAFramework/MOEAFramework/releases/download/v${VERSION}/MOEAFramework-${VERSION}.tar.gz
+        tar -xzf MOEAFramework-${VERSION}.tar.gz
+        mv MOEAFramework-${VERSION} MOEAFramework-Latest
         
         # ** Use the following to setup the latest master version **
-        git clone http://github.com/MOEAFramework/MOEAFramework
-        cd MOEAFramework
-        VERSION=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
-        ant package-binary
-        cd dist
-        tar -xzf MOEAFramework-${VERSION}.tar.gz
-        mv MOEAFramework-${VERSION} ../../MOEAFramework-Latest
+        #git clone http://github.com/MOEAFramework/MOEAFramework
+        #cd MOEAFramework
+        #VERSION=$(cat META-INF/build.properties | awk '{split($0,a,"="); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
+        #ant package-binary
+        #cd dist
+        #tar -xzf MOEAFramework-${VERSION}.tar.gz
+        #mv MOEAFramework-${VERSION} ../../MOEAFramework-Latest
     - name: Setup executables
       run: |
         mv WFG/wfg2 MOEAFramework-Latest
